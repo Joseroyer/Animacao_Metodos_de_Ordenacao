@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.Random;
 
 public class HelloApplication extends Application {
-    public Thread animationThread;
-
     AnchorPane pane;
     Button botao_inicio, botaoReset;
 
@@ -26,7 +24,7 @@ public class HelloApplication extends Application {
     private int[] vetValores;
     private final int ms = 400;
 
-    private final String[] quickSortCodeLines = {
+    private final String[] codigoQuickSortVetor = {
             "public void quickSort(int ini, int fim) {",          // 0
             "    int i = ini, j = fim, aux;",                     // 1
             "    boolean flag = true;",                           // 2
@@ -75,10 +73,8 @@ public class HelloApplication extends Application {
         botaoReset = new Button();
         botaoReset.setLayoutX(100);
         botaoReset.setLayoutY(500);
-//        botaoReset.setText("Heap Sort");
-//        botaoReset.setOnAction(e->{ iniciaHeapSort(pane); });
-//        pane.getChildren().add(botaoReset);
-        createAndFillVetor();
+
+        inserirValoresVetor();
         criarBotoes(pane);
 
 
@@ -99,7 +95,7 @@ public class HelloApplication extends Application {
 
 
         Scene scene = new Scene(pane, 1200, 600);
-        stage.setTitle("Pesquisa e Ordenação! Métodos Quick Sort e Heap");
+        stage.setTitle("Pesquisa e Ordenação -> Método Quick Sort ");
         stage.setScene(scene);
         stage.show();
     }
@@ -124,32 +120,17 @@ public class HelloApplication extends Application {
             vetLines[i].setStyle("-fx-text-fill: white; -fx-background-color: #3366ff;");
             pane.getChildren().add(vetLines[i]);
 
-            //Insere label com posição
+            //Insere label com posição do i
             indexLabel = new Label(i + "");
-            indexLabel.setLayoutX(posX + barWidth / 2.0 - 5); // centraliza aproximado
-            indexLabel.setLayoutY(startY + barHeight + 5);    // abaixo do botão
+            indexLabel.setLayoutX(posX + barWidth / 2.0 - 5);
+            indexLabel.setLayoutY(startY + barHeight + 5);
             pane.getChildren().add(indexLabel);
         }
     }
 
-    public void createSquares(AnchorPane pane) {
-        double barWidth = 30;
-        double spacing = 5;
-        double startX = 40;
-
-        vetLines = new Button[10];
-        for (int i = 0; i < vetValores.length; i++) {
-            vetLines[i] = new Button(vetValores[i] + "");
-            vetLines[i].setMinWidth(barWidth);
-            vetLines[i].setLayoutX((startX * i) + spacing);
-            vetLines[i].setLayoutY((startX * i) + spacing);
-            vetLines[i].setStyle("-fx-text-fill: #ff0000;");
-            pane.getChildren().add(vetLines[i]);
-        }
-    }
 
     private void resetVetor() {
-        createAndFillVetor();
+        inserirValoresVetor();
         for (int i = 0; i < vetValores.length; i++) {
             vetLines[i] = new Button(vetValores[i] + "");
             vetLines[i].setMinHeight(vetValores[i]);
@@ -157,7 +138,7 @@ public class HelloApplication extends Application {
     }
 
 
-    public void createAndFillVetor() {
+    public void inserirValoresVetor() {
         vetValores = new int[10];
         Random random = new Random();
         for (int i = 0; i < vetValores.length; i++) {
@@ -252,7 +233,7 @@ public class HelloApplication extends Application {
             destacarIJ(i, j);
             sleep(ms);
         }
-
+        destacarIJ(i, j);
         atualizaCodigo(codeViewer, 19);
         sleep(ms);
 
@@ -283,11 +264,11 @@ public class HelloApplication extends Application {
 
     private void atualizaCodigo(TextArea codeViewer, int linha) {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < quickSortCodeLines.length; i++) {
+        for (int i = 0; i < codigoQuickSortVetor.length; i++) {
             if (i == linha) {
-                builder.append(">> ").append(quickSortCodeLines[i]).append("\n");
+                builder.append(">> ").append(codigoQuickSortVetor[i]).append("\n");
             } else {
-                builder.append("   ").append(quickSortCodeLines[i]).append("\n");
+                builder.append("   ").append(codigoQuickSortVetor[i]).append("\n");
             }
         }
         Platform.runLater(() -> codeViewer.setText(builder.toString()));
@@ -296,12 +277,12 @@ public class HelloApplication extends Application {
     private void destacarIJ(int i, int j) {
         Platform.runLater(() -> {
             for (int k = 0; k < vetLines.length; k++) {
-                if (k == i) {
-                    vetLines[k].setStyle("-fx-background-color: #3399ff; -fx-text-fill: white;"); // i = azul
-                } else if (k == j) {
-                    vetLines[k].setStyle("-fx-background-color: #9933ff; -fx-text-fill: white;"); // j = roxo
+                if (k == i) { //azul
+                    vetLines[k].setStyle("-fx-background-color: #00a135; -fx-text-fill: white;");
+                } else if (k == j) {//roxo
+                    vetLines[k].setStyle("-fx-background-color: #9933ff; -fx-text-fill: white;");
                 } else {
-                    vetLines[k].setStyle("-fx-background-color: transparent; -fx-text-fill: #ff0000;");
+                    vetLines[k].setStyle("-fx-background-color: #3366ff;; -fx-text-fill: white;");
                 }
             }
         });
