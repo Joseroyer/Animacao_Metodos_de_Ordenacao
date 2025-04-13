@@ -155,14 +155,6 @@ public class HelloApplication extends Application {
     }
 
 
-    private void resetVetor() {
-        inserirValoresVetor();
-        for (int i = 0; i < vetValores.length; i++) {
-            vetLines[i] = new Button(vetValores[i] + "");
-            vetLines[i].setMinHeight(vetValores[i]);
-        }
-    }
-
     public void inserirValoresVetor() {
         vetValores = new int[10];
         Random random = new Random();
