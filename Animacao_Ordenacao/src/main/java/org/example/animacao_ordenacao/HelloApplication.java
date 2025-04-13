@@ -15,11 +15,12 @@ import java.util.Random;
 
 public class HelloApplication extends Application {
     AnchorPane pane;
-    Button botao_inicio, botaoReset;
+    Button botaoInicio, botaoReset;
 
     private Label statusLabel, indexLabel;
+    private Label iLabel, jLabel, auxLabel, vetILabel, vetJLabel;
 
-    private TextArea codeViewer;
+    private TextArea codigoFonteTA;
     private Button[] vetLines;
     private int[] vetValores;
     private final int ms = 400;
@@ -58,14 +59,15 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         pane = new AnchorPane();
-        botao_inicio = new Button();
-        botao_inicio.setLayoutX(10);
-        botao_inicio.setLayoutY(500);
-        botao_inicio.setText("Quick Sort");
-        botao_inicio.setOnAction(e -> {
+        botaoInicio = new Button();
+        botaoInicio.setLayoutX(10);
+        botaoInicio.setLayoutY(500);
+        botaoInicio.setText("Quick Sort");
+        botaoInicio.setOnAction(e -> {
             iniciaQuickSort(0, vetValores.length - 1);
         });
-        pane.getChildren().add(botao_inicio);
+        pane.getChildren().add(botaoInicio);
+
         botaoReset = new Button();
         botaoReset.setLayoutX(100);
         botaoReset.setLayoutY(500);
@@ -77,21 +79,45 @@ public class HelloApplication extends Application {
         inserirValoresVetor();
         criarBotoes(pane);
 
-
         //TextArea com fonte
-        codeViewer = new TextArea();
-        codeViewer.setLayoutX(650);
-        codeViewer.setLayoutY(20);
-        codeViewer.setPrefWidth(500);
-        codeViewer.setPrefHeight(500);
-        codeViewer.setEditable(false);
-        pane.getChildren().add(codeViewer);
+        codigoFonteTA = new TextArea();
+        codigoFonteTA.setLayoutX(650);
+        codigoFonteTA.setLayoutY(20);
+        codigoFonteTA.setPrefWidth(500);
+        codigoFonteTA.setPrefHeight(500);
+        codigoFonteTA.setEditable(false);
+        pane.getChildren().add(codigoFonteTA);
 
         //StatusLabel
         statusLabel = new Label("Aguardando ordenação...");
         statusLabel.setLayoutX(10);
         statusLabel.setLayoutY(550);
         pane.getChildren().add(statusLabel);
+
+        iLabel = new Label("i: 0");
+        iLabel.setLayoutX(30);
+        iLabel.setLayoutY(360);
+        pane.getChildren().add(iLabel);
+
+        jLabel = new Label("j: 0");
+        jLabel.setLayoutX(80);
+        jLabel.setLayoutY(360);
+        pane.getChildren().add(jLabel);
+
+        auxLabel = new Label("aux: 0");
+        auxLabel.setLayoutX(120);
+        auxLabel.setLayoutY(360);
+        pane.getChildren().add(auxLabel);
+
+        vetILabel = new Label("vet[i]: 0");
+        vetILabel.setLayoutX(30);
+        vetILabel.setLayoutY(400);
+        pane.getChildren().add(vetILabel);
+
+        vetJLabel = new Label("vet[j]: 0");
+        vetJLabel.setLayoutX(100);
+        vetJLabel.setLayoutY(400);
+        pane.getChildren().add(vetJLabel);
 
 
         Scene scene = new Scene(pane, 1200, 600);
@@ -137,7 +163,6 @@ public class HelloApplication extends Application {
         }
     }
 
-
     public void inserirValoresVetor() {
         vetValores = new int[10];
         Random random = new Random();
@@ -152,6 +177,7 @@ public class HelloApplication extends Application {
             protected Void call() {
                 quickSort(ini, fim);
                 Platform.runLater(() -> statusLabel.setText("Ordenação finalizada com sucesso!"));
+                atualizarInfo(0, 0, 0, true);
                 return null;
             }
         };
@@ -160,67 +186,74 @@ public class HelloApplication extends Application {
     }
 
     public void quickSort(int ini, int fim) {
-        int i = ini, j = fim, aux;
+        int i = ini, j = fim, aux = 0;
         boolean flag = true;
 
+        atualizarInfo(i, j, aux,false);
+
         destacarIJ(i, j);
-        atualizaCodigo(codeViewer, 1);
+        atualizaCodigo(codigoFonteTA, 1);
         sleep(ms);
 
-        atualizaCodigo(codeViewer, 2);
+        atualizaCodigo(codigoFonteTA, 2);
         sleep(ms);
 
         while (i < j) {
-            atualizaCodigo(codeViewer, 4);
+            atualizaCodigo(codigoFonteTA, 4);
             sleep(ms);
 
             if (flag) {
-                atualizaCodigo(codeViewer, 5);
+                atualizaCodigo(codigoFonteTA, 5);
                 sleep(ms);
 
                 while (i < j && vetValores[i] <= vetValores[j]) {
-                    atualizaCodigo(codeViewer, 6);
+                    atualizaCodigo(codigoFonteTA, 6);
                     sleep(ms);
 
                     i++;
                     destacarIJ(i, j);
+                    atualizarInfo(i, j, aux,false);
 
-                    atualizaCodigo(codeViewer, 7);
+                    atualizaCodigo(codigoFonteTA, 7);
                     sleep(ms);
                 }
 
-                atualizaCodigo(codeViewer, 8);
+                atualizaCodigo(codigoFonteTA, 8);
                 sleep(ms);
             } else {
-                atualizaCodigo(codeViewer, 9);
+                atualizaCodigo(codigoFonteTA, 9);
                 sleep(ms);
 
                 while (i < j && vetValores[j] >= vetValores[i]) {
-                    atualizaCodigo(codeViewer, 10);
+                    atualizaCodigo(codigoFonteTA, 10);
                     sleep(ms);
 
                     j--;
                     destacarIJ(i, j);
+                    atualizarInfo(i, j, aux,false);
 
-                    atualizaCodigo(codeViewer, 11);
+                    atualizaCodigo(codigoFonteTA, 11);
                     sleep(ms);
                 }
 
-                atualizaCodigo(codeViewer, 12);
+                atualizaCodigo(codigoFonteTA, 12);
                 sleep(ms);
             }
 
-            atualizaCodigo(codeViewer, 15);
+            atualizaCodigo(codigoFonteTA, 15);
             sleep(ms);
             aux = vetValores[i];
+            atualizarInfo(i, j, aux,false);
 
-            atualizaCodigo(codeViewer, 16);
+            atualizaCodigo(codigoFonteTA, 16);
             sleep(ms);
             vetValores[i] = vetValores[j];
+            atualizarInfo(i, j, aux,false);
 
-            atualizaCodigo(codeViewer, 17);
+            atualizaCodigo(codigoFonteTA, 17);
             sleep(ms);
             vetValores[j] = aux;
+            atualizarInfo(i, j, aux,false);
 
             Button tempButton = vetLines[i];
             vetLines[i] = vetLines[j];
@@ -229,30 +262,31 @@ public class HelloApplication extends Application {
             move_botoes(vetLines[i], vetLines[j]);
 
             flag = !flag;
-            atualizaCodigo(codeViewer, 18);
+            atualizaCodigo(codigoFonteTA, 18);
             destacarIJ(i, j);
             sleep(ms);
         }
         destacarIJ(i, j);
-        atualizaCodigo(codeViewer, 19);
+        atualizaCodigo(codigoFonteTA, 19);
         sleep(ms);
 
         if (ini < i - 1) {
-            atualizaCodigo(codeViewer, 21);
+            atualizaCodigo(codigoFonteTA, 21);
+            atualizarInfo(ini, i-1, 0,false);
             sleep(ms);
             quickSort(ini, i - 1);
         }
 
         if (j + 1 < fim) {
-            atualizaCodigo(codeViewer, 23);
+            atualizaCodigo(codigoFonteTA, 23);
+            atualizarInfo(j+1, fim, 0,false);
             sleep(ms);
             quickSort(j + 1, fim);
         }
 
-        atualizaCodigo(codeViewer, 25);
+        atualizaCodigo(codigoFonteTA, 25);
         sleep(ms);
     }
-
 
     private void sleep(int ms) {
         try {
@@ -262,7 +296,7 @@ public class HelloApplication extends Application {
         }
     }
 
-    private void atualizaCodigo(TextArea codeViewer, int linha) {
+    private void atualizaCodigo(TextArea codigoFonteTA, int linha) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < codigoQuickSortVetor.length; i++) {
             if (i == linha) {
@@ -271,20 +305,31 @@ public class HelloApplication extends Application {
                 builder.append("   ").append(codigoQuickSortVetor[i]).append("\n");
             }
         }
-        Platform.runLater(() -> codeViewer.setText(builder.toString()));
+        Platform.runLater(() -> codigoFonteTA.setText(builder.toString()));
     }
 
     private void destacarIJ(int i, int j) {
         Platform.runLater(() -> {
             for (int k = 0; k < vetLines.length; k++) {
-                if (k == i) { //azul
+                if (k == i) { // azul
                     vetLines[k].setStyle("-fx-background-color: #00a135; -fx-text-fill: white;");
-                } else if (k == j) {//roxo
+                } else if (k == j) { //roxo
                     vetLines[k].setStyle("-fx-background-color: #9933ff; -fx-text-fill: white;");
                 } else {
                     vetLines[k].setStyle("-fx-background-color: #3366ff;; -fx-text-fill: white;");
                 }
             }
+        });
+    }
+
+    private void atualizarInfo(int i, int j, int aux, boolean isFim) {
+        Platform.runLater(() -> {
+            iLabel.setText("i: " + i);
+            jLabel.setText("j: " + j);
+            auxLabel.setText("aux: " + aux);
+
+            vetILabel.setText("vet[i]: " + (!isFim ? vetValores[i] : 0));
+            vetJLabel.setText("vet[j]: " + (!isFim ? vetValores[j] : 0));
         });
     }
 
